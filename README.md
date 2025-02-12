@@ -10,6 +10,9 @@ Redis Caching 전략 구현하기
 - [RedisTemplate 내부 탐구: Spring Data Redis는 Lettuce를 어떻게 추상화했는가?](https://dkswhdgur246.tistory.com/84)
 
 #### Getting Started
+`docker compose up -d`
+
+
 
 ### Reference Documentation
 

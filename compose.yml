@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql
+    container_name: mysql_for_caching
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: caching
+
+  redis:
+    image: redis
+    container_name: redis_for_caching
+    ports:
+      - 6379:6379
