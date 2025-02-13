@@ -28,8 +28,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	// db
+	// redis cache
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// local cache
+//	implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+	// db
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// test
