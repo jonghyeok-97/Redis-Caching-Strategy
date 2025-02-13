@@ -1,0 +1,5 @@
+GET localhost:8080/1
+###
+POST localhost:8080
+###
+DELETE localhost:8080/1
