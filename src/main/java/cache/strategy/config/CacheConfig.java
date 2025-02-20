@@ -6,12 +6,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 @EnableCaching
 @Configuration
@@ -30,14 +30,15 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheConfiguration(RedisConnectionFactory redisConnectionFactoryDB1) {
         RedisCacheConfiguration memberConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(1))
-                .disableCachingNullValues()
+                .entryTtl(Duration.ofSeconds(20))
+//                .disableCachingNullValues()
                 .serializeValuesWith(
-                        SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())); //JSON 으로 저장 가능
+                        RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())); //JSON 으로 저장 가능
 
-        return RedisCacheManager.RedisCacheManagerBuilder
+        return RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactoryDB1) // 어떤 Redis Client 쓸건지
                 .withCacheConfiguration("Member", memberConfig) // 어떤 CacheName에 어떤 Config 를 적용할건지
+                .transactionAware()
                 .build();
     }
 
@@ -48,8 +49,9 @@ public class CacheConfig {
      */
     @Bean
     public RedisConnectionFactory redisConnectionFactoryDB1() {
+        int indexOfRedis = 1;
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setDatabase(1);
+        configuration.setDatabase(indexOfRedis);
         return new LettuceConnectionFactory(configuration);
     }
 }
